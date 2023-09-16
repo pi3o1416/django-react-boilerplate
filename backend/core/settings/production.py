@@ -1,6 +1,4 @@
-import sentry_sdk
 from decouple import Csv, config
-from sentry_sdk.integrations.django import DjangoIntegration
 
 from .base import *  # noqa
 
@@ -21,20 +19,20 @@ MEDIA_URL = "/media/"
 
 SERVER_EMAIL = "foo@example.com"
 
-EMAIL_HOST = "smtp.sendgrid.net"
-EMAIL_HOST_USER = config("SENDGRID_USERNAME")
-EMAIL_HOST_PASSWORD = config("SENDGRID_PASSWORD")
+EMAIL_HOST = config("EMAIL_HOST")
+EMAIL_HOST_USER = config("EMAIL_USER")
+EMAIL_HOST_PASSWORD = config("EMAIL_PASSWORD")
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
 # Security
 SECURE_HSTS_PRELOAD = True
+SECURE_HSTS_SECONDS = config("SECURE_HSTS_SECONDS", default=3600, cast=int)
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 SECURE_SSL_REDIRECT = True
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
-SECURE_HSTS_SECONDS = config("SECURE_HSTS_SECONDS", default=3600, cast=int)
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_BROWSER_XSS_FILTER = True
@@ -110,6 +108,3 @@ LOGGING = {
 }
 
 JS_REVERSE_EXCLUDE_NAMESPACES = ["admin"]
-
-# Sentry
-sentry_sdk.init(dsn=SENTRY_DSN, integrations=[DjangoIntegration()], release=COMMIT_SHA)

@@ -2,6 +2,7 @@
 
 import os
 
+import pygments.formatters
 from decouple import config  # noqa
 from dj_database_url import parse as db_url  # noqa
 
@@ -13,11 +14,9 @@ def base_dir_join(*args):
     return os.path.join(BASE_DIR, *args)
 
 
-SITE_ID = 1
-
 DEBUG = True
 
-ADMINS = (("Admin", "foo@example.com"),)
+ADMINS = (("Monir Hossain", "mmonir.m.29@gmail.com"),)
 
 AUTH_USER_MODEL = "users.User"
 
@@ -34,10 +33,13 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # Third party apps
     "django_js_reverse",
     "webpack_loader",
     "import_export",
     "rest_framework",
+    "django_extensions",
+    # Local apps
     "common",
     "users",
 ]
@@ -54,7 +56,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "{{project_name}}.urls"
+ROOT_URLCONF = "core.urls"
 
 TEMPLATES = [
     {
@@ -82,7 +84,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "{{project_name}}.wsgi.application"
+WSGI_APPLICATION = "core.wsgi.application"
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -139,10 +141,6 @@ CELERY_RESULT_SERIALIZER = "json"
 CELERY_ACKS_LATE = True
 CELERY_TIMEZONE = TIME_ZONE
 
-# Sentry
-SENTRY_DSN = config("SENTRY_DSN", default="")
-COMMIT_SHA = config("RENDER_GIT_COMMIT", default="")
-
 # Fix for Safari 12 compatibility issues, please check:
 # https://github.com/vintasoftware/safari-samesite-cookie-issue
 CSRF_COOKIE_SAMESITE = None
@@ -151,3 +149,9 @@ SESSION_COOKIE_SAMESITE = None
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Shell Plus
+SHELL_PLUS = "ipython"
+SHELL_PLUS_PRINT_SQL = True
+SHELL_PLUS_PYGMENTS_FORMATTER = pygments.formatters.TerminalFormatter
+SHELL_PLUS_PYGMENTS_FORMATTER_KWARGS = {}
